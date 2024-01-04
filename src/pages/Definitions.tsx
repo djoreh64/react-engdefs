@@ -1,21 +1,22 @@
 import React from "react";
+import { upperCase } from "src/utils/upperCase";
+import { deleteSpaces } from "src/utils/deleteSpaces";
 import { TextField, createTheme, ThemeProvider, debounce } from "@mui/material";
 import translate from "translate";
 import "src/style/style.scss";
 
 const Home = () => {
-  const upperCase = (word: string) => {
-    return word[0].toUpperCase() + word.substring(1, word.length)
-  }
   async function getTranslate(word: string) {
-    return word === await translate(word, {from: 'ru', to: 'en'}) ? await translate(word, {from: 'en', to: 'ru'}) : await translate(word, {from: 'ru', to: 'en'});
+    return word === (await translate(word, { from: "ru", to: "en" }))
+      ? await translate(word, { from: "en", to: "ru" })
+      : await translate(word, { from: "ru", to: "en" });
   }
   const [word, setWord] = React.useState<string>("");
   const [translated, setTranslated] = React.useState<string>("");
   const [definition, setDefinition] = React.useState<any[]>([]);
   const [sound, setSound] = React.useState<boolean>(true);
   async function getDefs(word: string) {
-    const transated = await translate(word, {from: 'ru', to: 'en'});
+    const transated = await translate(word, { from: "ru", to: "en" });
     const res = await fetch(
       `https://api.dictionaryapi.dev/api/v2/entries/en/${transated}`,
     );
@@ -26,16 +27,17 @@ const Home = () => {
   const debouncedGetDefs = React.useCallback(
     debounce((word: string) => {
       getDefs(word);
-      getTranslate(word).then((translate) => setTranslated(translate))
+      getTranslate(word).then((translate) => setTranslated(translate));
     }, 700),
     [],
   );
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedGetDefs(e.target.value);
-    setWord(e.target.value);
+    debouncedGetDefs(deleteSpaces(e.target.value));
+    setWord(deleteSpaces(e.target.value));
+    e.target.value = deleteSpaces(e.target.value)
     if (!word) {
-      setDefinition([])
-      setTranslated('')
+      setDefinition([]);
+      setTranslated("");
     }
   };
   const onClickStart = () => {
@@ -47,7 +49,7 @@ const Home = () => {
     audio.current?.pause();
     setSound(true);
   };
-  const theme = createTheme({
+  const inputTheme = createTheme({
     typography: {
       fontFamily: `"Montserrat", sans-serif`,
       fontSize: 12,
@@ -60,10 +62,10 @@ const Home = () => {
     },
   });
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={inputTheme}>
       <main className="home">
         <TextField
-          inputProps={{maxLength: 45}}
+          inputProps={{ maxLength: 45 }}
           onChange={onChangeInput}
           variant="filled"
           sx={{ width: "30%" }}
@@ -71,19 +73,14 @@ const Home = () => {
           label="Введите слово..."
           type="search"
         />
-        <div
-          className={word ? "description" : "description hidden"}
-        >
+        <div className={word ? "description" : "description hidden"}>
           <div className="description__headline">
             <h2 className="description__word">
               {word && upperCase(word)}
-              {definition[0]?.phonetic ? (
+              {definition[0]?.phonetic && (
                 <span className="description__transcription">
                   [{definition[0]?.phonetic}]
-                </span>
-              ) : (
-                ""
-              )}
+                </span>)}
             </h2>
             {sound ? (
               <svg
