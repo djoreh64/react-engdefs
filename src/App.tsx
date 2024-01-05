@@ -1,13 +1,14 @@
 import React from "react";
-import Home from "src/pages/Definitions";
+import Home from "src/pages/Definition";
 import Header from "./components/Header";
 
 const App: React.FC = () => {
   return (
-  <>
-    <Header/>
-    <Home/>
-  </>)
+    <>
+      <Header />
+      <Home />
+    </>
+  );
 };
 
 export default App;

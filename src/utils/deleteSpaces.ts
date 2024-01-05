@@ -1,3 +1,3 @@
 export const deleteSpaces = (word: string) => {
-    return word.replace(' ', '')
-}
+  return word.replace(" ", "").replace("\n", "");
+};
