@@ -2,47 +2,66 @@ import React from "react";
 import { upperCase } from "src/utils/upperCase";
 import { deleteSpaces } from "src/utils/deleteSpaces";
 import { TextField, ThemeProvider, debounce } from "@mui/material";
-import { InputStyles } from "./muiStyles";
-import translate from "translate";
+import { InputStyles } from "./inputStyles";
+import { useNavigate } from "react-router-dom";
 import "src/style/style.scss";
 import ScrollIcon from "src/components/Header/icons/ScrollIcon";
 import StartIcon from "src/components/Header/icons/StartIcon";
 import PauseIcon from "src/components/Header/icons/PauseIcon";
+import translate from "translate";
+import { translateTexts } from "src/redux/slices/textSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setWord,
+  setDefinition,
+  translateText,
+  setTranslated,
+} from "src/redux/slices/definitionSlice";
+import { RootState } from "src/redux/store";
+import { AppDispatch } from "src/redux/store";
+import { setText } from "src/redux/slices/textSlice";
 
 const Home = () => {
-  async function getTranslate(word: string) {
-    return word === (await translate(word, { from: "ru", to: "en" }))
-      ? await translate(word, { from: "en", to: "ru" })
-      : await translate(word, { from: "ru", to: "en" });
-  }
-  const [word, setWord] = React.useState<string>("");
-  const [translated, setTranslated] = React.useState<string>("");
-  const [definition, setDefinition] = React.useState<any[]>([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const word = useSelector((state: RootState) => state.definition.word);
+  const translated = useSelector(
+    (state: RootState) => state.definition.translated,
+  );
+  const [mainDefinition] = useSelector(
+    (state: RootState) => state.definition.definition,
+  );
   const [sound, setSound] = React.useState<boolean>(true);
+
   async function getDefs(word: string) {
-    const transated = await translate(word, { from: "ru", to: "en" });
+    const translatedWord = await translate(word, { from: "ru", to: "en" });
     const res = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${transated}`,
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${translatedWord}`,
     );
     const json = await res.json();
-    setDefinition(json);
+    dispatch(setDefinition(json));
   }
   const audio = React.useRef<HTMLAudioElement>(null);
   const debouncedGetDefs = React.useCallback(
     debounce((word: string) => {
       getDefs(word);
-      getTranslate(word).then((translate) => setTranslated(translate));
+      dispatch(translateText(word));
     }, 700),
     [],
   );
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedGetDefs(deleteSpaces(e.target.value));
-    setWord(deleteSpaces(e.target.value));
     e.target.value = deleteSpaces(e.target.value);
-    if (!word) {
-      setDefinition([]);
-      setTranslated("");
+    dispatch(setWord(e.target.value));
+    if (!e.target.value) {
+      dispatch(setTranslated(""));
+      dispatch(setDefinition([]));
     }
+    debouncedGetDefs(e.target.value);
+  };
+  const onClickDefinition = (text: string) => {
+    navigate("/text");
+    dispatch(translateTexts(text));
+    dispatch(setText(text));
   };
   const onClickStart = () => {
     audio.current?.play();
@@ -56,76 +75,78 @@ const Home = () => {
   const inputTheme = InputStyles();
   return (
     <ThemeProvider theme={inputTheme}>
-      <main className="home">
-        <TextField
-          inputProps={{ maxLength: 45 }}
-          onChange={onChangeInput}
-          multiline={true}
-          rows={2}
-          sx={{ marginTop: "70px", width: { xs: "80%", md: "30%" } }}
-          id="home__search"
-          label="Введите слово..."
-          type="search"
-        />
-        <div className={word ? "description" : "description hidden"}>
-          <div className="description__headline">
-            <h2 className="description__word">
-              {word && upperCase(word)}
-              {definition[0]?.phonetic && (
-                <span className="description__transcription">
-                  [{definition[0]?.phonetic}]
-                </span>
-              )}
-            </h2>
-            {sound ? (
-              <StartIcon
-                width={22}
-                height={22}
-                classNames={
-                  definition[0]?.phonetics[0]?.audio
-                    ? "description__icon"
-                    : "description__icon disable"
-                }
-                onClickStart={onClickStart}
-              />
-            ) : (
-              <PauseIcon
-                width={22}
-                height={22}
-                classNames={
-                  definition[0]?.phonetics[0]?.audio
-                    ? "description__icon"
-                    : "description__icon disable"
-                }
-                onClickPause={onClickPause}
-              />
+      <TextField
+        inputProps={{ maxLength: 45 }}
+        onChange={onChangeInput}
+        multiline={true}
+        rows={2}
+        sx={{ marginTop: "70px", width: { xs: "80%", md: "30%" } }}
+        id="home__search"
+        label="Введите слово..."
+        value={word}
+        type="search"
+      />
+      <div className={word ? "description" : "description hidden"}>
+        <div className="description__headline">
+          <h2 className="description__word">
+            {word && upperCase(word)}
+            {mainDefinition?.phonetic && (
+              <span className="description__transcription">
+                [{mainDefinition?.phonetic}]
+              </span>
             )}
-            <audio
-              ref={audio}
-              className="description__audio"
-              src={definition[0]?.phonetics[0]?.audio}
-            ></audio>
-          </div>
-          <h2 className="description__translated">
-            {translated && upperCase(translated)}
           </h2>
-          <ol className="description__definitions">
-            {definition[0]?.meanings?.map(
-              (meaning: any, i: number) =>
-                meaning?.definitions?.map((def: any, j: number) => (
-                  <li key={i + j} className="description__definition">
-                    {def.definition}
-                    <hr />
-                  </li>
-                )),
-            )}
-          </ol>
-          {definition[0]?.meanings.reduce(
-            (acc: number, cur: any) => acc + cur.definitions.length,
-            0,
-          ) > 2 && <ScrollIcon width={32} height={32} />}
+          {sound ? (
+            <StartIcon
+              width={22}
+              height={22}
+              classNames={
+                mainDefinition?.phonetics[0]?.audio
+                  ? "description__icon"
+                  : "description__icon disable"
+              }
+              onClickStart={onClickStart}
+            />
+          ) : (
+            <PauseIcon
+              width={22}
+              height={22}
+              classNames={
+                mainDefinition?.phonetics[0]?.audio
+                  ? "description__icon"
+                  : "description__icon disable"
+              }
+              onClickPause={onClickPause}
+            />
+          )}
+          <audio
+            ref={audio}
+            className="description__audio"
+            src={mainDefinition?.phonetics[0]?.audio}
+          ></audio>
         </div>
-      </main>
+        <h2 className="description__translated">
+          {mainDefinition && upperCase(translated)}
+        </h2>
+        <ol className="description__definitions">
+          {mainDefinition?.meanings?.map(
+            (meaning: any, i: number) =>
+              meaning?.definitions?.map((def: any, j: number) => (
+                <li
+                  onClick={() => onClickDefinition(def.definition)}
+                  key={i + j}
+                  className="description__definition"
+                >
+                  {def.definition}
+                </li>
+              )),
+          )}
+        </ol>
+        {mainDefinition?.meanings.reduce(
+          (acc: number, cur: any) => acc + cur.definitions.length,
+          0,
+        ) > 2 && <ScrollIcon width={32} height={32} />}
+      </div>
     </ThemeProvider>
   );
 };

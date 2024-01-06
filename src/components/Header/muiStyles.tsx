@@ -1,7 +1,13 @@
 import { createTheme } from "@mui/material";
 
+declare module '@mui/material/styles' {
+  interface BreakpointOverrides {
+    ssm: true
+  }
+}
+
 const muiStyles = () => {
-  const theme = createTheme({
+  return createTheme({
     typography: {
       fontFamily: `"Montserrat", sans-serif`,
     },
@@ -14,14 +20,14 @@ const muiStyles = () => {
     breakpoints: {
       values: {
         xs: 0,
+        ssm: 300,
         sm: 400,
-        md: 900,
+        md: 600,
         lg: 1200,
         xl: 1536,
       },
     },
   });
-  return theme;
 };
 
 export default muiStyles;

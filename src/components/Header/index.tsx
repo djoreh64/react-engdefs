@@ -1,13 +1,27 @@
 import React from "react";
 import styles from "src/components/Header/Header.module.scss";
 import { ButtonGroup, Button, ThemeProvider } from "@mui/material";
+import { Link, useLocation } from "react-router-dom"; // Обновленный импорт
 import muiStyles from "./muiStyles";
 
 const Header: React.FC = () => {
-  const tabs = ["Определение", "Текст", "Словарь"];
-  const [currentPage, setCurrentPage] = React.useState(tabs[0]);
+  const location = useLocation()
+  const currentPageLocation = location.pathname
+  const theme = muiStyles();
+  const tabs = [
+    {
+      title: "Определение",
+      link: "/",
+    },
+    {
+      title: "Текст",
+      link: "/text",
+    },
+    { title: "Словарь", link: "/dictionary" },
+  ];
+  const [, setCurrentPage] = React.useState({});
   return (
-    <ThemeProvider theme={muiStyles}>
+    <ThemeProvider theme={theme}>
       <header className={styles.header}>
         <ButtonGroup
           sx={{
@@ -21,19 +35,19 @@ const Header: React.FC = () => {
           size="large"
         >
           {tabs.map((tab, i) => (
-            <Button
-              key={i}
-              onClick={() => setCurrentPage(tab)}
-              sx={{
-                overflow: "hidden",
-                width: "100%",
-                height: "100%",
-                fontSize: { xs: 9, sm: 12 },
-                backgroundColor: currentPage === tab && "#e5e5e5",
-              }}
-            >
-              {tab}
-            </Button>
+            <Link to={tab.link} key={i}>
+              <Button
+                onClick={() => setCurrentPage(tab.title)}
+                sx={{
+                  width: {xs: '130px', ssm: '90px', sm: '110px', md: '140px'},
+                  height: {xs: '40px', ssm: '60px', sm: '50px'},
+                  fontSize: { xs: 10, md: 12, ssm: 9 },
+                  backgroundColor: currentPageLocation === tab.link && "#e5e5e5",
+                }}
+              >
+                {tab.title}
+              </Button>
+            </Link>
           ))}
         </ButtonGroup>
       </header>

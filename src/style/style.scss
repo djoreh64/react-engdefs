@@ -4,7 +4,8 @@
 }
 
 ::selection {
-  background-color: #9999994f;
+  background-color: #575757;
+  color: #f2f2f2;
 }
 
 * {
@@ -13,8 +14,8 @@
   box-sizing: border-box;
 }
 
-.home {
-  height: 100vh;
+.main {
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -29,6 +30,10 @@ hr {
   width: 100%;
 }
 
+.description:hover .description__scroll-icon {
+  opacity: 0;
+}
+
 .description {
   &::-webkit-scrollbar {
     display: none;
@@ -36,12 +41,11 @@ hr {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 60%;
+  height: 300px;
   width: 40%;
+  opacity: 1;
   margin-top: 50px;
-  transition:
-    height 0.4s ease-out,
-    opacity 0.1s ease-out;
+  transition: 0.4s ease-out;
 
   &__headline {
     width: 80vh;
@@ -62,8 +66,12 @@ hr {
   }
 
   &__definitions {
+    scroll-snap-type: y mandatory;
     display: flex;
-    position: relative;
+    position: absolute;
+    width: 30%;
+    bottom: 0;
+    height: 40vh;
     overflow-x: scroll;
     align-items: center;
     flex-direction: column;
@@ -74,12 +82,30 @@ hr {
     }
   }
 
+  &__definition {
+    scroll-snap-align: center;
+    text-indent: 5px;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #9e9e9e30;
+    padding: 20px;
+    cursor: pointer;
+    transition: background 0.2s ease-in;
+
+    &:hover {
+      border-radius: 10px;
+      background-color: #9e9e9e20;
+    }
+  }
+
   &__icon {
     cursor: pointer;
     margin-left: 20px;
   }
 
   &__scroll-icon {
+    animation: rocking 1.5s alternate infinite;
     position: absolute;
     bottom: 85px;
     filter: drop-shadow(0 0 15px #64646494);
@@ -87,12 +113,6 @@ hr {
     &:hover {
       transform: translateY(10px);
     }
-  }
-
-  &__definition {
-    text-indent: 5px;
-    text-align: center;
-    margin-bottom: 30px;
   }
 }
 
@@ -106,22 +126,31 @@ hr {
   display: none;
 }
 
+@keyframes rocking {
+  to {
+    transform: translateY(10px);
+  }
+}
+
 @media (max-width: 1024px) {
   .description {
     width: 80%;
+
+    &__definitions {
+      width: 80%;
+    }
   }
 }
 
 @media (max-width: 900px) {
   .description {
-    height: 500px;
+    &__definitions {
+      width: 80%;
+    }
   }
 }
 
 @media (max-width: 600px) {
-  .description {
-    height: 400px;
-  }
 }
 
 @media (max-width: 400px) {
