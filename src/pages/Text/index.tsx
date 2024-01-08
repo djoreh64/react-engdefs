@@ -19,7 +19,7 @@ const Text: React.FC = () => {
   const translated = useSelector((state: RootState) => state.text.translated);
   const updateInputValue = React.useCallback(
     debounce((str: string) => {
-      dispatch(translateTexts(str.trimEnd()));
+      dispatch(translateTexts(str.replace(/\s{2,}/g, ' ').trim()));
     }, 400),
     [],
   );

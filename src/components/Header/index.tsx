@@ -1,13 +1,13 @@
-import React from "react";
-import styles from "src/components/Header/Header.module.scss";
-import { ButtonGroup, Button, ThemeProvider } from "@mui/material";
-import { Link, useLocation } from "react-router-dom"; // Обновленный импорт
-import muiStyles from "./muiStyles";
+import React from "react"
+import styles from "src/components/Header/Header.module.scss"
+import { ButtonGroup, Button, ThemeProvider } from "@mui/material"
+import { Link, useLocation } from "react-router-dom" 
+import muiStyles from "./muiStyles"
 
 const Header: React.FC = () => {
   const location = useLocation()
   const currentPageLocation = location.pathname
-  const theme = muiStyles();
+  const theme = muiStyles()
   const tabs = [
     {
       title: "Определение",
@@ -18,8 +18,8 @@ const Header: React.FC = () => {
       link: "/text",
     },
     { title: "Словарь", link: "/dictionary" },
-  ];
-  const [, setCurrentPage] = React.useState({});
+  ]
+  const [, setCurrentPage] = React.useState({})
   return (
     <ThemeProvider theme={theme}>
       <header className={styles.header}>
@@ -39,10 +39,10 @@ const Header: React.FC = () => {
               <Button
                 onClick={() => setCurrentPage(tab.title)}
                 sx={{
-                  width: {xs: '130px', ssm: '90px', sm: '110px', md: '140px'},
-                  height: {xs: '40px', ssm: '60px', sm: '50px'},
+                  width: { xs: "130px", ssm: "90px", sm: "110px", md: "140px" },
+                  height: { xs: "40px", ssm: "60px", sm: "50px" },
                   fontSize: { xs: 10, md: 12, ssm: 9 },
-                  backgroundColor: currentPageLocation === tab.link && "#e5e5e5",
+                  backgroundColor: currentPageLocation === tab.link ? "#e5e5e5" : '',
                 }}
               >
                 {tab.title}
@@ -52,7 +52,7 @@ const Header: React.FC = () => {
         </ButtonGroup>
       </header>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

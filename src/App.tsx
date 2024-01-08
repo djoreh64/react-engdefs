@@ -1,8 +1,8 @@
-import Definition from "src/pages/Definition";
-import Header from "./components/Header";
-import { Routes, Route } from "react-router-dom";
-import Text from "./pages/Text";
-import Dictionary from "./pages/Dictionary";
+import Definition from "src/pages/Definition"
+import Header from "./components/Header"
+import { Routes, Route } from "react-router-dom"
+import Text from "./pages/Text"
+import Dictionary from "./pages/Dictionary"
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
         </Routes>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

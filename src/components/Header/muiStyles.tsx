@@ -1,6 +1,6 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from "@mui/material"
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface BreakpointOverrides {
     ssm: true
   }
@@ -27,7 +27,7 @@ const muiStyles = () => {
         xl: 1536,
       },
     },
-  });
-};
+  })
+}
 
-export default muiStyles;
+export default muiStyles

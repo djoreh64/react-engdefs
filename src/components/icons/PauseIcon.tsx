@@ -1,10 +1,22 @@
-import React from "react";
+type PauseIconProps = {
+  width: number
+  height: number
+  classNames: string
+  onClickPause: () => void
+}
 
-const Pause: React.FC = (onClickPause) => {
+const PauseIcon = ({
+  width,
+  height,
+  classNames,
+  onClickPause,
+}: PauseIconProps) => {
   return (
-    <div onClick = { onClickPause }
-      width="22px"
-      height="22px"
+    <svg
+      onClick={onClickPause}
+      className={classNames}
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -17,8 +29,8 @@ const Pause: React.FC = (onClickPause) => {
         d="M14 6C14 4.11438 14 3.17157 14.5858 2.58579C15.1716 2 16.1144 2 18 2C19.8856 2 20.8284 2 21.4142 2.58579C22 3.17157 22 4.11438 22 6V18C22 19.8856 22 20.8284 21.4142 21.4142C20.8284 22 19.8856 22 18 22C16.1144 22 15.1716 22 14.5858 21.4142C14 20.8284 14 19.8856 14 18V6Z"
         fill="#000"
       />
-    </div>
-  );
-};
+    </svg>
+  )
+}
 
-export default Pause
+export default PauseIcon

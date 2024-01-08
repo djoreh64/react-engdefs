@@ -1,9 +1,9 @@
 type StartIconProps = {
-  width: number;
-  height: number;
-  classNames: string;
-  onClickStart: () => void;
-};
+  width: number
+  height: number
+  classNames: string
+  onClickStart: () => void
+}
 
 const StartIcon = ({
   width,
@@ -26,7 +26,7 @@ const StartIcon = ({
         fill="#000"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default StartIcon;
+export default StartIcon
