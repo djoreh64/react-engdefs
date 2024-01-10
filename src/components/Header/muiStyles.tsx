@@ -1,8 +1,8 @@
-import { createTheme } from "@mui/material"
+import { createTheme } from "@mui/material";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
-    ssm: true
+    ssm: true;
   }
 }
 
@@ -20,14 +20,14 @@ const muiStyles = () => {
     breakpoints: {
       values: {
         xs: 0,
-        ssm: 300,
+        ssm: 200,
         sm: 400,
         md: 600,
         lg: 1200,
         xl: 1536,
       },
     },
-  })
-}
+  });
+};
 
-export default muiStyles
+export default muiStyles;

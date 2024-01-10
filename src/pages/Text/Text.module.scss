@@ -1,3 +1,27 @@
+* {
+  transition: .2s border;
+}
+
+@keyframes showIcon {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hideIcon {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+
 .inputHolder {
   display: flex;
   align-items: center;
@@ -8,5 +32,12 @@
 @media (max-width: 600px) {
   .inputHolder {
     flex-direction: column;
+  }
+}
+
+@media (max-height: 500px) {
+  .inputHolder {
+    position: fixed;
+    top: 150px;
   }
 }

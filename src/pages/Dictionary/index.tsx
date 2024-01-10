@@ -15,25 +15,22 @@ const Dictionary = () => {
   };
   return (
     <div className={styles.dictionary}>
-      {dictionary.length
-        ? dictionary?.map((item: DictionaryItem) => (
-            <div
-              onClick={() => onClickItem(item.word)}
-              key={item.word}
-              className={styles.dictionary__item}
-            >
-              {item.word}{" "}
-              {item.transcription && (
-                <span className={styles.description__transcription}>
-                  [{item.transcription}]
-                </span>
-              )}
-              <span className={styles.dictionary__translated}>
-                {item.translated}
-              </span>
-            </div>
-          ))
-        : <h1 className = {styles.dictionary__empty}>Вы не добавили ни одного слова в словарь!</h1>}
+      {dictionary.length ? (
+        dictionary?.map((item: DictionaryItem) => (
+          <div
+            onClick={() => onClickItem(item?.word)}
+            key={item.word}
+            className={styles.dictionary__item}>
+            {item.word}{" "}
+            {item.transcription && (
+              <span className={styles.description__transcription}>[{item.transcription}]</span>
+            )}
+            <span className={styles.dictionary__translated}>{item.translated}</span>
+          </div>
+        ))
+      ) : (
+        <h1 className={styles.dictionary__empty}>Вы не добавили ни одного слова в словарь!</h1>
+      )}
     </div>
   );
 };
