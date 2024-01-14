@@ -1,18 +1,17 @@
 type DictionaryIconProps = {
-  width: number;
-  height: number;
+  size: number;
   color: string;
   onClickDictionary: () => void;
 };
 
-const DictionaryIcon = ({ width, height, color, onClickDictionary }: DictionaryIconProps) => {
+const DictionaryIcon = ({ size, color, onClickDictionary }: DictionaryIconProps) => {
   return (
     <svg
       fill={color}
       className="description__dictionary-icon"
       onClick={onClickDictionary}
-      height={height}
-      width={width}
+      height={size}
+      width={size}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512">
       <g>

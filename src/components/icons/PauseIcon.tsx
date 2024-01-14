@@ -1,18 +1,17 @@
 type PauseIconProps = {
-  width: number;
-  height: number;
+  size: number;
   color: string;
   classNames: string;
   onClickPause: () => void;
 };
 
-const PauseIcon = ({ width, height, color, classNames, onClickPause }: PauseIconProps) => {
+const PauseIcon = ({ size, color, classNames, onClickPause }: PauseIconProps) => {
   return (
     <svg
       onClick={onClickPause}
       className={classNames}
-      width={width}
-      height={height}
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill={color}
       xmlns="http://www.w3.org/2000/svg">

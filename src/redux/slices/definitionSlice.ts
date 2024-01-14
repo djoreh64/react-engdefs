@@ -6,12 +6,14 @@ export interface DefinitionState {
   word: string;
   translated: string;
   definition: any[];
+  isLoading: boolean
 }
 
 const initialState: DefinitionState = {
   word: "",
   translated: "",
   definition: [],
+  isLoading: false
 };
 
 export const translateText = createAsyncThunk("definition/translateText", async (text: string) => {
@@ -36,7 +38,10 @@ export const definitionSlice = createSlice({
       } else {
         state.definition = [];
       }
-    },
+    }, 
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(translateText.fulfilled, (state, action) => {
@@ -45,6 +50,6 @@ export const definitionSlice = createSlice({
   },
 });
 
-export const { setWord, setTranslated, setDefinition } = definitionSlice.actions;
+export const { setWord, setTranslated, setDefinition, setIsLoading } = definitionSlice.actions;
 
 export default definitionSlice.reducer;

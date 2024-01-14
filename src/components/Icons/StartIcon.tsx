@@ -1,18 +1,17 @@
 type StartIconProps = {
-  width: number;
-  height: number;
+  size: number;
   color: string;
   classNames?: string;
   onClickStart?: () => void;
 };
 
-const StartIcon = ({ width, height, color, classNames, onClickStart }: StartIconProps) => {
+const StartIcon = ({ size, color, classNames, onClickStart }: StartIconProps) => {
   return (
     <svg
       onClick={onClickStart}
       className={classNames}
-      width={width}
-      height={height}
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill={color}
       xmlns="http://www.w3.org/2000/svg">

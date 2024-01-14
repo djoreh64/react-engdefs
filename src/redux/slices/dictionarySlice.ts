@@ -7,14 +7,20 @@ export interface DictionaryItem {
   transcription: string;
 }
 
-const initialState: DictionaryItem[] = [];
+type DictionaryState = {
+  items: DictionaryItem[]
+}
+
+const initialState: DictionaryState  = {
+  items: []
+};
 
 export const dictionarySlice = createSlice({
   name: "dictionary",
   initialState,
   reducers: {
     setDictionaryWord(state, action: PayloadAction<DictionaryItem>) {
-      state.push(action.payload);
+      state.items.push(action.payload);
     },
   },
 });
