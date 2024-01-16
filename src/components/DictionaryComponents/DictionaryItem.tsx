@@ -1,8 +1,7 @@
 import styles from "src/pages/Dictionary/dictionary.module.scss";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "src/redux/store";
-import { setWord } from "src/redux/slices/definitionSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "src/redux/store";
+import { setDictionaryItems } from "src/redux/slices/dictionarySlice";
 
 type DictionaryItemProps = {
   word: string;
@@ -12,10 +11,9 @@ type DictionaryItemProps = {
 
 const DictionaryItem = ({ word, transcription, translated }: DictionaryItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  const dictionary = useSelector((state: RootState) => state.dictionary.items);
   const onClickItem = (word: string) => {
-    dispatch(setWord(word));
-    navigate("/");
+    dispatch(setDictionaryItems(dictionary.filter((item) => item.word !== word)))
   };
   return (
     <div onClick={() => onClickItem(word)} key={word} className={styles.dictionary__item}>

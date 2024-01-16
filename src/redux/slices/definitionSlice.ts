@@ -41,7 +41,7 @@ export const definitionSlice = createSlice({
     }, 
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(translateText.fulfilled, (state, action) => {

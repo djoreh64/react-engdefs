@@ -37,8 +37,6 @@ const DefinitionTextField: React.FC = () => {
         const json = await res.json();
         dispatch(setDefinition(json));
         dispatch(translateText(word));
-      } catch (err) {
-        dispatch(setDefinition([]));
       } finally {
         dispatch(setIsLoading(false));
       }
@@ -52,14 +50,23 @@ const DefinitionTextField: React.FC = () => {
     []
   );
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = deleteSpaces(e.target.value);
-    dispatch(setWord(e.target.value));
-    debouncedGetDefs(e.target.value);
-    if (!e.target.value) {
+    const inputValue = e.target.value;
+    dispatch(setWord(inputValue));
+    if (!inputValue) {
       dispatch(setDefinition([]));
       dispatch(setTranslated(""));
+    } else {  
+      e.target.value = deleteSpaces(inputValue);
+      debouncedGetDefs(inputValue);
     }
   };
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
+    document.body.addEventListener("keypress", () => {
+      inputRef.current?.focus()
+    })
+  }, [])
+
   return (
     <TextField
       spellCheck={false}
@@ -83,7 +90,9 @@ const DefinitionTextField: React.FC = () => {
       sx={{
         marginTop: "90px",
         width: { xs: "80%", md: "30%" },
+        userSelect: 'none'
       }}
+      inputRef = {inputRef}
       id="home__search"
       label="Введите слово..."
       value={word}

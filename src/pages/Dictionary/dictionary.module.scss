@@ -1,3 +1,25 @@
+@keyframes showItem {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hideItem {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}
+
 .dictionary {
   width: 60%;
   margin-top: 150px;
@@ -8,16 +30,24 @@
     display: none;
   }
 
+  &-enter-active {
+    animation: showDefs 0.3s forwards;
+  }
+
+  &-exit-active {
+    animation: hideDefs 0.4s;
+  }
+
   &__empty {
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
     color: #4e4e4e;
     font-weight: normal;
     pointer-events: none;
     font-size: 25px;
-    height: 60vh;
   }
 
   &__item {
