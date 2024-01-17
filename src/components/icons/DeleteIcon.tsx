@@ -1,10 +1,9 @@
-type DeleteIconProps = {
+interface IDeleteIconProps {
   size: number;
   color: string;
-  onClickIcon?: () => void;
-};
+}
 
-const DeleteIcon = ({ size, color }: DeleteIconProps) => {
+const DeleteIcon = ({ size, color }: IDeleteIconProps) => {
   return (
     <svg
       fill={color}

@@ -73,3 +73,12 @@
     width: 80%;
   }
 }
+
+@media (max-width: 450px) {
+  .dictionary {
+    &__item {
+      font-size: 12px;
+    }
+  }
+}
+
